@@ -1,53 +1,109 @@
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Scanner;
 
-public class UseCase7PalindromeCheckerApp {
+public class UseCase8PalindromeCheckerApp {
 
-    // Method to check palindrome using Deque
-    public static boolean isPalindrome(String input) {
+    // Node class for Singly Linked List
+    static class Node {
+        char data;
+        Node next;
 
-        // Remove spaces and convert to lowercase for uniform comparison
-        input = input.replaceAll("\\s+", "").toLowerCase();
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
-        // Create Deque
-        Deque<Character> deque = new LinkedList<>();
+    // Head of the linked list
+    private Node head = null;
 
-        // Insert characters into deque
-        for (int i = 0; i < input.length(); i++) {
-            deque.addLast(input.charAt(i));
+    // Method to insert characters into linked list
+    public void insert(char data) {
+        Node newNode = new Node(data);
+
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newNode;
+        }
+    }
+
+    // Method to check palindrome using linked list
+    public boolean isPalindrome() {
+
+        if (head == null || head.next == null) {
+            return true;
         }
 
-        // Compare front and rear characters
-        while (deque.size() > 1) {
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
+        // Step 1: Find middle using Fast & Slow pointers
+        Node slow = head;
+        Node fast = head;
 
-            if (front != rear) {
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Step 2: Reverse second half
+        Node secondHalf = reverse(slow);
+
+        // Step 3: Compare both halves
+        Node firstHalf = head;
+        Node tempSecond = secondHalf;
+
+        while (tempSecond != null) {
+            if (firstHalf.data != tempSecond.data) {
                 return false;
             }
+            firstHalf = firstHalf.next;
+            tempSecond = tempSecond.next;
         }
 
         return true;
     }
 
+    // Method to reverse linked list
+    private Node reverse(Node node) {
+        Node prev = null;
+        Node current = node;
+        Node next = null;
+
+        while (current != null) {
+            next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
+    }
+
+    // Main method
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+        UseCase8PalindromeCheckerApp app = new UseCase8PalindromeCheckerApp();
 
-        System.out.println("=====================================");
-        System.out.println("   UC7: Deque-Based Palindrome App   ");
-        System.out.println("=====================================");
-
-        System.out.print("Enter a string to check: ");
+        System.out.println("=== UC8: Linked List Based Palindrome Checker ===");
+        System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        boolean result = isPalindrome(input);
+        // Convert string to lowercase (optional normalization)
+        input = input.toLowerCase();
 
-        if (result) {
-            System.out.println("Result: The given string is a PALINDROME.");
+        // Insert characters into linked list
+        for (int i = 0; i < input.length(); i++) {
+            app.insert(input.charAt(i));
+        }
+
+        // Check palindrome
+        if (app.isPalindrome()) {
+            System.out.println("Result: The given string is a Palindrome.");
         } else {
-            System.out.println("Result: The given string is NOT a palindrome.");
+            System.out.println("Result: The given string is NOT a Palindrome.");
         }
 
         scanner.close();
