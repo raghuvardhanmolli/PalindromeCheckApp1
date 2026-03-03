@@ -1,43 +1,47 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 
-public class UseCase5PalindromeCheckerApp {
-
-    // Method to check palindrome using Stack
-    public static boolean isPalindrome(String input) {
-
-        // Remove spaces and convert to lowercase
-        String cleanedString = input.replaceAll("\\s+", "").toLowerCase();
-
-        Stack<Character> stack = new Stack<>();
-
-        // Push all characters into stack
-        for (int i = 0; i < cleanedString.length(); i++) {
-            stack.push(cleanedString.charAt(i));
-        }
-
-        // Pop characters and compare
-        for (int i = 0; i < cleanedString.length(); i++) {
-            char poppedChar = stack.pop();
-            if (cleanedString.charAt(i) != poppedChar) {
-                return false;
-            }
-        }
-
-        return true;
-    }
+public class UseCase6PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("===== Stack-Based Palindrome Checker =====");
+        System.out.println("===== UC6: Queue + Stack Based Palindrome Checker =====");
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        boolean result = isPalindrome(input);
+        // Convert to lowercase and remove spaces
+        input = input.replaceAll("\\s+", "").toLowerCase();
 
-        if (result) {
+        // Create Queue (FIFO) and Stack (LIFO)
+        Queue<Character> queue = new LinkedList<>();
+        Stack<Character> stack = new Stack<>();
+
+        // Enqueue and Push characters
+        for (char ch : input.toCharArray()) {
+            queue.add(ch);     // Enqueue operation
+            stack.push(ch);    // Push operation
+        }
+
+        boolean isPalindrome = true;
+
+        // Compare dequeue (queue) and pop (stack)
+        while (!queue.isEmpty()) {
+
+            char fromQueue = queue.remove();  // Dequeue (FIFO)
+            char fromStack = stack.pop();     // Pop (LIFO)
+
+            if (fromQueue != fromStack) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        // Display Result
+        if (isPalindrome) {
             System.out.println("Result: The given string is a Palindrome.");
         } else {
             System.out.println("Result: The given string is NOT a Palindrome.");
