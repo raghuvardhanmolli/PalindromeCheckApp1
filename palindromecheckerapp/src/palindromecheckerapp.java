@@ -1,106 +1,39 @@
 import java.util.Scanner;
 
-public class UseCase8PalindromeCheckerApp {
+public class UseCase9PalindromeCheckerApp {
 
-    // Node class for Singly Linked List
-    static class Node {
-        char data;
-        Node next;
+    // Recursive method to check palindrome
+    public static boolean isPalindrome(String str, int start, int end) {
 
-        Node(char data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
-
-    // Head of the linked list
-    private Node head = null;
-
-    // Method to insert characters into linked list
-    public void insert(char data) {
-        Node newNode = new Node(data);
-
-        if (head == null) {
-            head = newNode;
-        } else {
-            Node temp = head;
-            while (temp.next != null) {
-                temp = temp.next;
-            }
-            temp.next = newNode;
-        }
-    }
-
-    // Method to check palindrome using linked list
-    public boolean isPalindrome() {
-
-        if (head == null || head.next == null) {
+        // Base Condition 1: If pointers cross or meet
+        if (start >= end) {
             return true;
         }
 
-        // Step 1: Find middle using Fast & Slow pointers
-        Node slow = head;
-        Node fast = head;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        // If characters at start and end do not match
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
         }
 
-        // Step 2: Reverse second half
-        Node secondHalf = reverse(slow);
-
-        // Step 3: Compare both halves
-        Node firstHalf = head;
-        Node tempSecond = secondHalf;
-
-        while (tempSecond != null) {
-            if (firstHalf.data != tempSecond.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            tempSecond = tempSecond.next;
-        }
-
-        return true;
+        // Recursive Call: Move towards center
+        return isPalindrome(str, start + 1, end - 1);
     }
 
-    // Method to reverse linked list
-    private Node reverse(Node node) {
-        Node prev = null;
-        Node current = node;
-        Node next = null;
-
-        while (current != null) {
-            next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-
-        return prev;
-    }
-
-    // Main method
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        UseCase8PalindromeCheckerApp app = new UseCase8PalindromeCheckerApp();
 
-        System.out.println("=== UC8: Linked List Based Palindrome Checker ===");
+        System.out.println("=== UC9: Recursive Palindrome Checker ===");
         System.out.print("Enter a string: ");
         String input = scanner.nextLine();
 
-        // Convert string to lowercase (optional normalization)
+        // Optional normalization
         input = input.toLowerCase();
 
-        // Insert characters into linked list
-        for (int i = 0; i < input.length(); i++) {
-            app.insert(input.charAt(i));
-        }
+        // Call recursive method
+        boolean result = isPalindrome(input, 0, input.length() - 1);
 
-        // Check palindrome
-        if (app.isPalindrome()) {
+        if (result) {
             System.out.println("Result: The given string is a Palindrome.");
         } else {
             System.out.println("Result: The given string is NOT a Palindrome.");
