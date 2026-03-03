@@ -1,32 +1,43 @@
 import java.util.Scanner;
 
-public class UseCase3PalindromeCheckerApp {
+public class UseCase4PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        // Create Scanner object to take user input
         Scanner scanner = new Scanner(System.in);
 
-        // Ask user to enter a string
-        System.out.println("Enter a string to check whether it is a palindrome:");
-        String originalString = scanner.nextLine();
+        System.out.println("=== Palindrome Checker App (UC4 - Character Array Based) ===");
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
 
-        // Variable to store reversed string
-        String reversedString = "";
+        // Convert string to character array
+        char[] characters = input.toCharArray();
 
-        // Reverse the string using for loop
-        for (int i = originalString.length() - 1; i >= 0; i--) {
-            reversedString = reversedString + originalString.charAt(i);
+        // Initialize two pointers
+        int start = 0;
+        int end = characters.length - 1;
+
+        boolean isPalindrome = true;
+
+        // Two-pointer comparison
+        while (start < end) {
+
+            if (characters[start] != characters[end]) {
+                isPalindrome = false;
+                break;
+            }
+
+            start++;
+            end--;
         }
 
-        // Compare original and reversed string using equals()
-        if (originalString.equals(reversedString)) {
-            System.out.println("The given string is a Palindrome.");
+        // Display result
+        if (isPalindrome) {
+            System.out.println("Result: The given string is a Palindrome.");
         } else {
-            System.out.println("The given string is NOT a Palindrome.");
+            System.out.println("Result: The given string is NOT a Palindrome.");
         }
 
-        // Close scanner
         scanner.close();
     }
 }
