@@ -1,30 +1,35 @@
 import java.util.Scanner;
+import java.util.Stack;
 
-public class PalindromeCheckerApp {
+// Palindrome service class (Encapsulation)
+class PalindromeChecker {
 
-    // Method to check palindrome ignoring spaces and case
-    public static boolean isPalindrome(String input) {
+    // Method to check palindrome using Stack
+    public boolean checkPalindrome(String input) {
 
-        // Normalize the string: remove spaces and convert to lowercase
+        // Normalize the string (remove spaces and convert to lowercase)
         String normalized = input.replaceAll("\\s+", "").toLowerCase();
 
-        // Convert string to char array
-        char[] arr = normalized.toCharArray();
+        Stack<Character> stack = new Stack<>();
 
-        int left = 0;
-        int right = arr.length - 1;
+        // Push characters to stack
+        for (int i = 0; i < normalized.length(); i++) {
+            stack.push(normalized.charAt(i));
+        }
 
-        // Compare characters from both ends
-        while (left < right) {
-            if (arr[left] != arr[right]) {
+        // Compare characters by popping from stack
+        for (int i = 0; i < normalized.length(); i++) {
+            if (normalized.charAt(i) != stack.pop()) {
                 return false;
             }
-            left++;
-            right--;
         }
 
         return true;
     }
+}
+
+// Main Application class
+public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
@@ -33,10 +38,15 @@ public class PalindromeCheckerApp {
         System.out.println("Enter a string to check palindrome:");
         String input = scanner.nextLine();
 
-        if (isPalindrome(input)) {
-            System.out.println("The given string is a palindrome (ignoring spaces and case).");
+        // Create object of PalindromeChecker
+        PalindromeChecker checker = new PalindromeChecker();
+
+        boolean result = checker.checkPalindrome(input);
+
+        if (result) {
+            System.out.println("The given string is a Palindrome.");
         } else {
-            System.out.println("The given string is NOT a palindrome.");
+            System.out.println("The given string is NOT a Palindrome.");
         }
 
         scanner.close();
